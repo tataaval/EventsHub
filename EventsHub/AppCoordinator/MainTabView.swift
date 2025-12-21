@@ -6,22 +6,36 @@
 //
 import SwiftUI
 
+enum AppTab: Hashable {
+    case home
+    case browse
+    case myEvents
+    case notifications
+    case profile
+}
+
 struct MainTabView: View {
 
     let onEventSelected: (Int) -> Void
     let onCategorySelected: (Int) -> Void
     let onLogout: () -> Void
+    
+    @State private var selectedTab: AppTab = .home
 
     var body: some View {
-        TabView {
+        TabView(selection: $selectedTab) {
 
             HomeView(
                 onEventSelected: onEventSelected,
-                onCategorySelected: onCategorySelected
+                onCategorySelected: onCategorySelected,
+                onViewAllTapped: {
+                    selectedTab = .browse
+                }
             )
             .tabItem {
                 Label("Home", systemImage: "house")
             }
+            .tag(AppTab.home)
 
             BrowseView(
                 onEventSelected: onEventSelected
@@ -29,6 +43,7 @@ struct MainTabView: View {
             .tabItem {
                 Label("Browse", systemImage: "magnifyingglass")
             }
+            .tag(AppTab.browse)
 
             MyEventsView(
                 onEventSelected: onEventSelected
@@ -36,11 +51,13 @@ struct MainTabView: View {
             .tabItem {
                 Label("My Events", systemImage: "calendar")
             }
+            .tag(AppTab.myEvents)
 
             NotificationsView()
             .tabItem {
                 Label("Notifications", systemImage: "bell")
             }
+            .tag(AppTab.notifications)
 
             ProfileView(
                 onLogout: onLogout
@@ -48,6 +65,7 @@ struct MainTabView: View {
             .tabItem {
                 Label("Profile", systemImage: "person")
             }
+            .tag(AppTab.profile)
         }
     }
 }
