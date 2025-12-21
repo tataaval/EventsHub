@@ -33,7 +33,7 @@ struct LoginView: View {
                         }
                     }
                     VStack(spacing: 20) {
-                        MainButtonView(title: "Sign In", action: {})
+                        MainButtonView(title: "Sign In", action: onLoginSuccess)
                         HStack {
                             Text("Don't have any account?")
                                 .fontWeight(.light)

@@ -35,7 +35,7 @@ struct AuthCoordinatorView: View {
 
                 case .resetPassword:
                     ResetPasswordView(
-                        text: .constant("Managa"),
+                        text: .constant(""),
                         onBackToLogin: {
                             path.removeAll()
                         }
