@@ -16,6 +16,7 @@ struct DropDownView: View {
             }) {
                 HStack {
                     Text(selectedOption)
+                        .font(.system(size: 14))
                         .foregroundColor(selectedOption == "Select Department" ? .gray : .black)
                     Spacer()
                     Image(systemName: isExpanded ? "chevron.up" : "chevron.down")
@@ -35,6 +36,7 @@ struct DropDownView: View {
                             onSelect(option)
                         }) {
                             Text(option)
+                                .font(.system(size: 14))
                                 .padding()
                                 .frame(maxWidth: .infinity, alignment: .leading)
                                 .foregroundStyle(.black)
