@@ -70,7 +70,8 @@ struct EventDetailsView: View {
                     Divider()
                     SpeakersSection(speakers: event.speakers)
                     Divider()
-                    FaqSection(items: event.faq)
+                    FaqSection(items: event.faq
+                    )
                 }
             }
             .navigationTitle("Event Details")

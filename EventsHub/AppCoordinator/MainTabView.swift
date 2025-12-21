@@ -16,11 +16,12 @@ enum AppTab: Hashable {
 
 struct MainTabView: View {
 
+    @Binding var selectedTab: AppTab
+    @Binding var preselectedCategory: EventCategory?
+
     let onEventSelected: (Int) -> Void
     let onCategorySelected: (Int) -> Void
     let onLogout: () -> Void
-    
-    @State private var selectedTab: AppTab = .home
 
     var body: some View {
         TabView(selection: $selectedTab) {
@@ -32,40 +33,28 @@ struct MainTabView: View {
                     selectedTab = .browse
                 }
             )
-            .tabItem {
-                Label("Home", systemImage: "house")
-            }
+            .tabItem { Label("Home", systemImage: "house") }
             .tag(AppTab.home)
 
             BrowseView(
+                preselectedCategory: $preselectedCategory,
                 onEventSelected: onEventSelected
             )
-            .tabItem {
-                Label("Browse", systemImage: "magnifyingglass")
-            }
+            .tabItem { Label("Browse", systemImage: "magnifyingglass") }
             .tag(AppTab.browse)
 
-            MyEventsView(
-                onEventSelected: onEventSelected
-            )
-            .tabItem {
-                Label("My Events", systemImage: "calendar")
-            }
-            .tag(AppTab.myEvents)
+            MyEventsView(onEventSelected: onEventSelected)
+                .tabItem { Label("My Events", systemImage: "calendar") }
+                .tag(AppTab.myEvents)
 
             NotificationsView()
-            .tabItem {
-                Label("Notifications", systemImage: "bell")
-            }
-            .tag(AppTab.notifications)
+                .tabItem { Label("Notifications", systemImage: "bell") }
+                .tag(AppTab.notifications)
 
-            ProfileView(
-                onLogout: onLogout
-            )
-            .tabItem {
-                Label("Profile", systemImage: "person")
-            }
-            .tag(AppTab.profile)
+            ProfileView(onLogout: onLogout)
+                .tabItem { Label("Profile", systemImage: "person") }
+                .tag(AppTab.profile)
         }
     }
 }
+
