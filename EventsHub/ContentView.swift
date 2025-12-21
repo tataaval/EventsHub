@@ -8,14 +8,71 @@
 import SwiftUI
 
 struct ContentView: View {
+    @StateObject private var viewModel = RegistrationViewModel()
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        NavigationStack {
+            ScrollView {
+                VStack {
+                    Text("Create Account")
+                        .font(.system(size: 32))
+                    Text("Enter your details to get started.")
+                        .font(.system(size: 16))
+                        .foregroundStyle(.gray)
+                    
+                    VStack(alignment: .leading, spacing: 24) {
+                        HStack(spacing: 16) {
+                            ReusableTextfield(title: "First Name", placeholder: "Your first name", text: $viewModel.firstName)
+                            ReusableTextfield(title: "Last Name", placeholder: "Your last name", text: $viewModel.lastName)
+                        }
+                        ReusableTextfield(title: "Email", placeholder: "managaluka@gmail.com", text: $viewModel.email)
+                        HStack {
+                            ReusableTextfield(title: "Enter OTP Code", placeholder: "+(995) 000-000-000", text: $viewModel.phoneNumber)
+                            
+                            Button {
+                                viewModel.sendOTP()
+                            } label: {
+                                Text("Send OTP")
+                                    .padding()
+                                    .background(Color.gray)
+                                    .frame(height: 46)
+                                    .foregroundStyle(.white)
+                                    .cornerRadius(6)
+                                    .padding(.top, 26)
+                            }
+                            .disabled(viewModel.isOTPSent)
+                        }
+                        OTPView(otp: $viewModel.otp)
+                        DropDownView(selectedOption: $viewModel.selectedDepartment, isExpanded: $viewModel.isDropdownExpanded, options: viewModel.options, onSelect: { department in
+                            viewModel.chooseDepartment(department: department)
+                        })
+                        VStack(alignment: .leading, spacing: 4) {
+                            ReusableTextfield(title: "Passowrd", placeholder: "Fill your password", text: $viewModel.password, isSecure: true)
+                            Text("Password must be at least 8 characters with uppercase, lowercase, and number.")
+                                .font(.system(size: 14))
+                                .foregroundStyle(.gray)
+                        }
+                        ReusableTextfield(title: "Confirm Password", placeholder: "Confirm ypur password", text: $viewModel.confirmPassword, isSecure: true)
+                        CheckmarkView(isChecked: $viewModel.isTermsChecked, title: "I agree to the Terms of Service and Privacy Policy")
+                        MainButtonView(title: "Create Account", action: { viewModel.submitRegistration() })
+                    }
+                    .padding(.horizontal, 24)
+                    .padding(.top, 50)
+                }
+                .padding(.top, 30)
+                Spacer()
+            }
+            .alert("Invalid Phone Number", isPresented: $viewModel.showPhoneAlert) {
+                Button("OK", role: .cancel) { }
+            } message: {
+                Text("Please write correct number")
+            }
+            .alert("Error", isPresented: $viewModel.showValidationAlert) {
+                Button("OK", role: .cancel) { }
+            } message: {
+                Text(viewModel.validationMessage)
+            }
         }
-        .padding()
     }
 }
 
