@@ -1,7 +1,7 @@
 import Foundation
 import Combine
 
-class RegistrationViewModel: ObservableObject {
+class RegisterViewModel: ObservableObject {
     @Published var firstName: String = ""
     @Published var lastName: String = ""
     @Published var email: String = ""

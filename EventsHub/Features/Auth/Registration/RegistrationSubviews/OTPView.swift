@@ -11,7 +11,7 @@ struct OTPView: View {
                     .frame(width: 14, height: 14)
                 
                 Text("Enter OTP Code")
-                    .font(.system(size: 16))
+                    .font(.system(size: 14))
                     .foregroundStyle(.black)
             }
             

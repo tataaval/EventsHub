@@ -12,7 +12,7 @@ struct CheckmarkView: View {
                 }
             Text(title)
                 .foregroundStyle(.black)
-                .font(.system(size: 16))
+                .font(.system(size: 14))
         }
     }
 }

@@ -9,7 +9,7 @@ struct DropDownView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text("Select Department")
-                .font(.system(size: 16))
+                .font(.system(size: 14))
                 .foregroundStyle(.black)
             Button(action: {
                 isExpanded.toggle()
