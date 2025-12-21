@@ -54,6 +54,7 @@ struct RegisterView: View {
                     ReusableTextfield(title: "Confirm Password", placeholder: "Confirm your password", text: $viewModel.confirmPassword, isSecure: true)
                     CheckmarkView(isChecked: $viewModel.isTermsChecked, title: "I agree to the Terms of Service and Privacy Policy")
                     MainButtonView(title: "Create Account", action: { viewModel.submitRegistration() } )
+                    GoToLoginView(title: "Already have an account?", onLogin: onLogin)
                 }
                 .padding(.horizontal, 24)
                 .padding(.top, 50)
