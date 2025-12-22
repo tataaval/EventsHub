@@ -6,20 +6,33 @@
 //
 
 import Combine
+import Foundation
 
-enum AppFlow {
-    case auth
-    case main
-}
-
+@MainActor
 final class AppCoordinator: ObservableObject {
-    @Published var flow: AppFlow = .auth
 
-    func loginSuccess() {
-        flow = .main
+    enum Flow {
+        case auth
+        case main
+    }
+
+    @Published var flow: Flow = .auth
+    private var cancellables = Set<AnyCancellable>()
+
+    init() {
+        flow = (SessionManager.shared.state == .authenticated) ? .main : .auth
+
+        SessionManager.shared.$state
+            .removeDuplicates()
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] state in
+                self?.flow = (state == .authenticated) ? .main : .auth
+            }
+            .store(in: &cancellables)
     }
 
     func logout() {
-        flow = .auth
+        SessionManager.shared.logout()
     }
 }
+

@@ -24,7 +24,7 @@ extension Endpoint {
         var finalHeaders = headers ?? [:]
 
         if requiresAuth,
-           let token = UserDefaults.standard.string(forKey: "authToken") {
+           let token = TokenManager.shared.getToken() {
             finalHeaders["Authorization"] = "Bearer \(token)"
         }
 

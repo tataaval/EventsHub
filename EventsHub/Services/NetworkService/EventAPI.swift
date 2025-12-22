@@ -25,7 +25,7 @@ enum EventAPI {
 extension EventAPI: Endpoint {
     
     var baseURL: URL {
-        guard let url = URL(string: "") else {  /* TODO: API-ის ჩაისვას */
+        guard let url = URL(string: "http://172.31.100.51:8080") else {  /* TODO: API-ის ჩაისვას */
             fatalError("Invalid base URL")
         }
         return url

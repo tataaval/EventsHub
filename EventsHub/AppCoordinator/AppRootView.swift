@@ -16,11 +16,7 @@ struct AppRootView: View {
         switch appCoordinator.flow {
 
         case .auth:
-            AuthCoordinatorView(
-                onLoginSuccess: {
-                    appCoordinator.loginSuccess()
-                }
-            )
+            AuthCoordinatorView()
 
         case .main:
             MainCoordinatorView(

@@ -28,7 +28,7 @@ final class NetworkService: NetworkServiceProtocol {
             throw NetworkError.invalidResponse
         }
 
-        try validateResponse(httpResponse)
+        try validateResponse(httpResponse, data: data)
 
         do {
             let decoder = JSONDecoder()
@@ -49,7 +49,7 @@ final class NetworkService: NetworkServiceProtocol {
             throw NetworkError.invalidResponse
         }
 
-        try validateResponse(httpResponse)
+        try validateResponse(httpResponse, data: data)
 
         do {
             let decoder = JSONDecoder()
@@ -58,17 +58,28 @@ final class NetworkService: NetworkServiceProtocol {
             throw NetworkError.decodingFailed
         }
     }
+    
+    private func validateResponse(_ response: HTTPURLResponse, data: Data) throws {
 
-    private func validateResponse(_ response: HTTPURLResponse) throws {
+        let errorMessage = (try? JSONDecoder().decode(ErrorResponse.self, from: data))?.error
+
         switch response.statusCode {
+
         case 200...299:
             return
-        case 400...499: //TODO: აქ 401-ზე ლოგაუთი გვექნება გასათვალისწინებელი წესიით
-            throw NetworkError.clientError(response.statusCode)
-        case 500...599:
-            throw NetworkError.serverError(response.statusCode)
+
+        case 401:
+            SessionManager.shared.logout()
+            throw NetworkError.clientError(401, message: errorMessage)
+
+        case 400...499:
+            throw NetworkError.clientError(response.statusCode, message: errorMessage)
+
+        case 500...599: throw NetworkError.serverError(response.statusCode, message: errorMessage)
+
         default:
             throw NetworkError.unknownError(response.statusCode)
         }
     }
+
 }
