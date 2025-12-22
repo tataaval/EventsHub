@@ -2,9 +2,6 @@ import SwiftUI
 
 struct LoginView: View {
     @StateObject private var viewModel = LoginViewModel()
-        let onRegister: () -> Void
-        let onResetPassword: () -> Void
-        let onLoginSuccess: () -> Void
     
     let onRegister: () -> Void
     let onResetPassword: () -> Void
@@ -85,5 +82,5 @@ struct LoginView: View {
 }
 
 #Preview {
-    LoginView(viewModel: LoginViewModel(), onRegister: {}, onResetPassword: {}, onLoginSuccess: {})
+    LoginView(onRegister: {}, onResetPassword: {})
 }

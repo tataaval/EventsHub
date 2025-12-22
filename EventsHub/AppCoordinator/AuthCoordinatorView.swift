@@ -15,12 +15,10 @@ enum AuthRoute: Hashable {
 struct AuthCoordinatorView: View {
     
     @State private var path: [AuthRoute] = []
-    let onLoginSuccess: () -> Void
     
     var body: some View {
         NavigationStack(path: $path) {
             LoginView(
-                viewModel: LoginViewModel(),
                 onRegister: { path.append(.register) },
                 onResetPassword: { path.append(.resetPassword) },
             )
