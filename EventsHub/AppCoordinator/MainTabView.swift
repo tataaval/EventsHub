@@ -47,7 +47,7 @@ struct MainTabView: View {
                 .tabItem { Label("My Events", systemImage: "calendar") }
                 .tag(AppTab.myEvents)
 
-            NotificationsView()
+            NotificationsView(viewModel: NotificationsViewModel())
                 .tabItem { Label("Notifications", systemImage: "bell") }
                 .tag(AppTab.notifications)
 
