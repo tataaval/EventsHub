@@ -23,7 +23,6 @@ struct AuthCoordinatorView: View {
                 viewModel: LoginViewModel(),
                 onRegister: { path.append(.register) },
                 onResetPassword: { path.append(.resetPassword) },
-                onLoginSuccess: onLoginSuccess
             )
             .navigationDestination(for: AuthRoute.self) { route in
                 switch route {
