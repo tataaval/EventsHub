@@ -1,5 +1,5 @@
-import Foundation
 import Combine
+import Foundation
 
 @MainActor
 final class LoginViewModel: ObservableObject {
@@ -10,7 +10,7 @@ final class LoginViewModel: ObservableObject {
     @Published var errorMessage: String?
     @Published var isRememberMeChecked: Bool = false
     @Published var showErrorAlert = false
-    
+
     func login() {
         guard !email.isEmpty, !password.isEmpty else {
             errorMessage = "Email and password are required"
@@ -23,11 +23,16 @@ final class LoginViewModel: ObservableObject {
 
         Task {
             do {
-                let response: LoginResponse = try await NetworkService.shared.fetch(
-                    from: EventAPI.login(email: email, password: password)
-                )
+                let response: LoginResponse = try await NetworkService.shared.fetch(from: EventAPI.login(email: email, password: password))
 
-                SessionManager.shared.login(token: response.token)
+                SessionManager.shared.login(
+                    token: response.token,
+                    profile: UserProfile(
+                        userId: response.userId,
+                        fullName: response.fullName,
+                        role: response.role
+                    )
+                )
 
                 isLoading = false
 
@@ -39,4 +44,3 @@ final class LoginViewModel: ObservableObject {
         }
     }
 }
-

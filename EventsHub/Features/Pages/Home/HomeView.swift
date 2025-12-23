@@ -58,7 +58,7 @@ struct HomeView: View {
             ScrollView {
                 VStack(spacing: 24) {
 
-                    WelcomeView(userName: "vinme vinmeshvili")
+                    WelcomeView(userName: viewModel.username)
 
                     UpcomingEventsSection(events: viewModel.upcomingEvents, onEventSelected: onEventSelected, onViewAllTapped: onViewAllTapped)
                     

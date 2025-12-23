@@ -18,20 +18,32 @@ final class SessionManager: ObservableObject {
     }
 
     @Published private(set) var state: State
+    @Published private(set) var profile: UserProfile?
 
     private init() {
-        state = TokenManager.shared.getToken() == nil
-            ? .unauthenticated
-            : .authenticated
+        let tokenExists = TokenManager.shared.getToken() != nil
+        let storedProfile = ProfileStorage.shared.getProfile()
+
+        self.profile = storedProfile
+        self.state = tokenExists && storedProfile != nil
+            ? .authenticated
+            : .unauthenticated
     }
 
-    func login(token: String) {
+    func login(token: String, profile: UserProfile) {
         TokenManager.shared.save(token: token)
-        state = .authenticated
+        ProfileStorage.shared.save(profile: profile)
+
+        self.profile = profile
+        self.state = .authenticated
     }
 
     func logout() {
         TokenManager.shared.clear()
+        ProfileStorage.shared.clear()
+
+        profile = nil
         state = .unauthenticated
     }
 }
+
