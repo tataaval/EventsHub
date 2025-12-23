@@ -6,10 +6,12 @@
 //
 
 import Combine
-
+import Foundation
 
 final class HomeViewModel: ObservableObject {
-    //temporary data
+    
+    @Published var username: String = ""
+    
     @Published var categories: [Category] = [
         Category(id: 1, title: "Team Building", icon: "person.3", eventCount: 12),
         Category(id: 2, title: "Sports", icon: "figure.run", eventCount: 8),
@@ -38,4 +40,19 @@ final class HomeViewModel: ObservableObject {
                       registered: "102 registered", spotsLeft: "8 spots left")
         
     ]
+    
+    private let session: SessionManager
+
+      init(session: SessionManager = .shared) {
+          self.session = session
+          bindSession()
+      }
+
+      private func bindSession() {
+          username = session.profile?.fullName ?? ""
+
+          session.$profile
+              .map { $0?.fullName ?? "" }
+              .assign(to: &$username)
+      }
 }
