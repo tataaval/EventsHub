@@ -53,7 +53,9 @@ struct RegisterView: View {
                     }
                     ReusableTextfield(title: "Confirm Password", placeholder: "Confirm your password", text: $viewModel.confirmPassword, isSecure: true)
                     CheckmarkView(isChecked: $viewModel.isTermsChecked, title: "I agree to the Terms of Service and Privacy Policy")
-                    MainButtonView(title: "Create Account", action: { viewModel.submitRegistration() } )
+                    MainButtonView(title: viewModel.isLoading ? "Creating Account..." : "Create Account", action: { viewModel.submitRegistration() } )
+                        .disabled(viewModel.isLoading)
+                    
                     GoToLoginView(title: "Already have an account?", onLogin: onLogin)
                 }
                 .padding(.horizontal, 24)
@@ -71,6 +73,16 @@ struct RegisterView: View {
             Button("OK", role: .cancel) { }
         } message: {
             Text(viewModel.validationMessage)
+        }
+        .alert("Success", isPresented: $viewModel.registrationSuccess) {
+            Button("OK", role: .cancel) { onLogin() }
+        } message: {
+            Text("Registration Succeed")
+        }
+        .alert("Registration Failed", isPresented: $viewModel.showErrorAllert) {
+            Button("OK", role: .cancel) { }
+        } message: {
+            Text(viewModel.errorMessage ?? "Try Again")
         }
     }
 }

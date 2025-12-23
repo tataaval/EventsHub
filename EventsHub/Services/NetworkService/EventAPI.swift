@@ -8,7 +8,7 @@ import Foundation
 
 enum EventAPI {
     case login(email: String, password: String)
-    case register(email: String) //TODO: რა ველებიც გჭირდება რეგისტრაციისთვის
+    case register(firstName: String, lastName: String, email: String, mobileNumber: String, departmentId: Int, password: String, confirmPassword: String)
     case me
 
     case getEvents(filters: [String: Any]?)
@@ -88,10 +88,15 @@ extension EventAPI: Endpoint {
         case .login(let email, let password):
             return ["email": email, "password": password]
 
-        case .register(let email):
+        case .register(let firstName, let lastName, let email, let mobileNumber, let departmentId, let password, let confirmPassword):
             return [
+                "firstName": firstName,
+                "lastName": lastName,
                 "email": email,
-                //TODO: რა ველებიც გჭირდება
+                "mobileNumber": mobileNumber,
+                "departmentId": departmentId,
+                "password": password,
+                "confirmPassword": confirmPassword
             ]
 
         case .getEvents(let filters):

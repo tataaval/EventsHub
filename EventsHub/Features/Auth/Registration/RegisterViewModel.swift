@@ -1,6 +1,7 @@
 import Foundation
 import Combine
 
+@MainActor
 class RegisterViewModel: ObservableObject {
     @Published var firstName: String = ""
     @Published var lastName: String = ""
@@ -16,6 +17,10 @@ class RegisterViewModel: ObservableObject {
     @Published var isTermsChecked: Bool = false
     @Published var showValidationAlert: Bool = false
     @Published var validationMessage: String = ""
+    @Published var isLoading: Bool = false
+    @Published var registrationSuccess: Bool = false
+    @Published var errorMessage: String?
+    @Published var showErrorAllert: Bool = false
     let options = ["Organizer", "Employee"]
     
     
@@ -48,6 +53,17 @@ class RegisterViewModel: ObservableObject {
         return containsDigit
     }
     
+    private func getDepartmentId(department: String) -> Int { //TODO: - "შეიცვალოს დეპარტამენტები"
+        switch department {
+        case "Organizer":
+            return 1
+        case "Employee":
+            return 2
+        default:
+            return 0
+        }
+    }
+    
     func sendOTP() {
         guard isValidPhoneNumber(phoneNumber: phoneNumber) else {
                 showPhoneAlert = true
@@ -67,6 +83,32 @@ class RegisterViewModel: ObservableObject {
     
     func toggleDropdown() {
         isDropdownExpanded.toggle()
+    }
+    
+    func registration() {
+        isLoading = true
+        errorMessage = nil
+        
+        let departmentId = getDepartmentId(department: selectedDepartment)
+        
+        Task {
+            do {
+                let response: RegisterResponse = try await NetworkService.shared.fetch(from: EventAPI.register(
+                    firstName: firstName,
+                    lastName: lastName,
+                    email: email,
+                    mobileNumber: phoneNumber,
+                    departmentId: departmentId,
+                    password: password,
+                    confirmPassword: confirmPassword))
+                isLoading = false
+                registrationSuccess = true
+            } catch {
+                isLoading = false
+                errorMessage = error.localizedDescription
+                showErrorAllert = true
+            }
+        }
     }
     
     func submitRegistration() {
@@ -155,5 +197,6 @@ class RegisterViewModel: ObservableObject {
             return
         }
         
+        registration()
     }
 }
