@@ -16,8 +16,6 @@ struct MainCoordinatorView: View {
     @State private var selectedTab: AppTab = .home
     @State private var preselectedCategory: EventCategory? = nil
 
-    let onLogout: () -> Void
-
     var body: some View {
         NavigationStack(path: $path) {
             MainTabView(
@@ -29,8 +27,7 @@ struct MainCoordinatorView: View {
                 onCategorySelected: { categoryID in
                     preselectedCategory = mapCategory(categoryID)
                     selectedTab = .browse
-                },
-                onLogout: onLogout
+                }
             )
             .navigationDestination(for: MainRoute.self) { route in
                 switch route {

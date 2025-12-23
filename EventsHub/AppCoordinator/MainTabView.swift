@@ -21,7 +21,6 @@ struct MainTabView: View {
 
     let onEventSelected: (Int) -> Void
     let onCategorySelected: (Int) -> Void
-    let onLogout: () -> Void
 
     var body: some View {
         TabView(selection: $selectedTab) {
@@ -51,7 +50,7 @@ struct MainTabView: View {
                 .tabItem { Label("Notifications", systemImage: "bell") }
                 .tag(AppTab.notifications)
 
-            ProfileView(onLogout: onLogout)
+            ProfileView()
                 .tabItem { Label("Profile", systemImage: "person") }
                 .tag(AppTab.profile)
         }
