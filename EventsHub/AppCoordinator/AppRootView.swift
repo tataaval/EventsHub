@@ -19,11 +19,7 @@ struct AppRootView: View {
             AuthCoordinatorView()
 
         case .main:
-            MainCoordinatorView(
-                onLogout: {
-                    appCoordinator.logout()
-                }
-            )
+            MainCoordinatorView()
         }
     }
 }

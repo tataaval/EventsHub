@@ -12,8 +12,6 @@ class RegisterViewModel: ObservableObject {
     @Published var otp: [String] = Array(repeating: "", count: 6)
     @Published var isOTPSent: Bool = false
     @Published var showPhoneAlert: Bool = false
-    @Published var selectedDepartment: String = "Select Department"
-    @Published var isDropdownExpanded: Bool = false
     @Published var isTermsChecked: Bool = false
     @Published var showValidationAlert: Bool = false
     @Published var validationMessage: String = ""
@@ -21,8 +19,9 @@ class RegisterViewModel: ObservableObject {
     @Published var registrationSuccess: Bool = false
     @Published var errorMessage: String?
     @Published var showErrorAllert: Bool = false
-    let options = ["Organizer", "Employee"]
-    
+    @Published var departments: [Department] = []
+    @Published var selectedDepartment: Department?
+    @Published var isDropdownExpanded: Bool = false
     
     var isUserValid: Bool {
         !firstName.isEmpty
@@ -52,15 +51,18 @@ class RegisterViewModel: ObservableObject {
         let containsDigit = password.contains { $0.isNumber }
         return containsDigit
     }
-    
-    private func getDepartmentId(department: String) -> Int { //TODO: - "შეიცვალოს დეპარტამენტები"
-        switch department {
-        case "Organizer":
-            return 1
-        case "Employee":
-            return 2
-        default:
-            return 0
+
+    func fetchDepartments() {
+        Task {
+            do {
+                let result: [Department] = try await NetworkService.shared.fetch(
+                    from: EventAPI.departments
+                )
+                departments = result
+            } catch {
+                errorMessage = error.localizedDescription
+                showErrorAllert = true
+            }
         }
     }
     
@@ -76,7 +78,7 @@ class RegisterViewModel: ObservableObject {
         isOTPSent = true
     }
     
-    func chooseDepartment(department: String) {
+    func chooseDepartment(department: Department) {
         selectedDepartment = department
         isDropdownExpanded = false
     }
@@ -86,10 +88,14 @@ class RegisterViewModel: ObservableObject {
     }
     
     func registration() {
+        guard let departmentId = selectedDepartment?.id else {
+           validationMessage = "Please select department"
+           showValidationAlert = true
+           return
+       }
+        
         isLoading = true
         errorMessage = nil
-        
-        let departmentId = getDepartmentId(department: selectedDepartment)
         
         Task {
             do {
@@ -161,7 +167,7 @@ class RegisterViewModel: ObservableObject {
             return
         }
         
-        if selectedDepartment == "Select Department" {
+        if selectedDepartment == nil {
             validationMessage = "Please select department"
             showValidationAlert = true
             return

@@ -9,7 +9,7 @@ import Foundation
 enum EventAPI {
     case login(email: String, password: String)
     case register(firstName: String, lastName: String, email: String, mobileNumber: String, departmentId: Int, password: String, confirmPassword: String)
-    case me
+    case departments
 
     case getEvents(filters: [String: Any]?)
     case getEventDetails(id: Int)
@@ -37,8 +37,8 @@ extension EventAPI: Endpoint {
             return "/api/auth/login"
         case .register:
             return "/api/auth/register"
-        case .me:
-            return "/api/auth/me"
+        case .departments:
+            return "/api/departments"
 
         case .getEvents:
             return "/api/events"

@@ -42,9 +42,19 @@ struct RegisterView: View {
                         .disabled(viewModel.isOTPSent)
                     }
                     OTPView(otp: $viewModel.otp)
-                    DropDownView(selectedOption: $viewModel.selectedDepartment, isExpanded: $viewModel.isDropdownExpanded, options: viewModel.options, onSelect: { department in
-                        viewModel.chooseDepartment(department: department)
-                    })
+                    DropDownView(
+                        selectedOption: Binding(
+                            get: { viewModel.selectedDepartment?.name ?? "Select Department" },
+                            set: { _ in }
+                        ),
+                        isExpanded: $viewModel.isDropdownExpanded,
+                        options: viewModel.departments.map { $0.name },
+                        onSelect: { name in
+                            viewModel.selectedDepartment = viewModel.departments.first {
+                                $0.name == name
+                            }
+                        }
+                    )
                     VStack(alignment: .leading, spacing: 4) {
                         ReusableTextfield(title: "Password", placeholder: "Fill your password", text: $viewModel.password, isSecure: true)
                         Text("Password must be at least 8 characters with uppercase, lowercase, and number.")
@@ -83,6 +93,9 @@ struct RegisterView: View {
             Button("OK", role: .cancel) { }
         } message: {
             Text(viewModel.errorMessage ?? "Try Again")
+        }
+        .onAppear {
+            viewModel.fetchDepartments()
         }
     }
 }
