@@ -9,6 +9,7 @@ import SwiftUI
 struct BrowseEventCardView: View {
 
     let event: Event
+    let viewModel: BrowseViewModel
     let onEventSelected: (Int) -> Void
 
     var body: some View {
@@ -19,7 +20,7 @@ struct BrowseEventCardView: View {
             VStack(alignment: .leading, spacing: 6) {
 
                 HStack {
-                    Text(event.category)
+                    Text(viewModel.formattedCategory(for: event))
                         .font(.caption)
                         .padding(.horizontal, 8)
                         .padding(.vertical, 4)
@@ -28,7 +29,7 @@ struct BrowseEventCardView: View {
 
                     Spacer()
 
-                    Text(event.status)
+                    Text(viewModel.formattedStatus(for: event))
                         .font(.caption)
                         .padding(.horizontal, 8)
                         .padding(.vertical, 4)
@@ -39,22 +40,22 @@ struct BrowseEventCardView: View {
                 Text(event.title)
                     .font(.system(size: 16))
 
-                Label(event.time, systemImage: "clock")
+                Label(viewModel.formattedTime(for: event), systemImage: "clock")
                     .font(.system(size: 12))
                     .foregroundStyle(.gray300)
 
-                Label(event.location, systemImage: "location")
+                Label(viewModel.formattedLocation(for: event), systemImage: "location")
                     .font(.system(size: 12))
                     .foregroundStyle(.gray300)
 
                 HStack(spacing: 12) {
                     Label(
-                        "\(event.registered) registered",
+                        "\(viewModel.formattedRegistered(for: event)) registered",
                         systemImage: "person.2"
                     )
                     .font(.system(size: 12))
                     .foregroundStyle(.gray500)
-                    Label("\(event.spotsLeft) spots left", systemImage: "chair")
+                    Label("\(viewModel.formattedSpotsLeft(for: event)) spots left", systemImage: "chair")
                         .font(.system(size: 12))
                         .foregroundStyle(.gray500)
                 }
@@ -76,10 +77,10 @@ struct BrowseEventCardView: View {
 
     private var dateView: some View {
         VStack {
-            Text(event.month)
+            Text(viewModel.formattedMonth(for: event))
                 .font(.system(size: 12))
                 .foregroundStyle(.gray300)
-            Text(event.day)
+            Text(viewModel.formattedDay(for: event))
                 .font(.system(size: 24))
                 .foregroundStyle(.gray900)
         }

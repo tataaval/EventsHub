@@ -20,25 +20,12 @@ enum EventCategory: String, CaseIterable, Identifiable {
     }
 }
 
-struct Event {
-    let id: Int
-    let title: String
-    let category: String
-    let month: String
-    let day: String
-    let time: String
-    let location: String
-    let registered: Int
-    let spotsLeft: Int
-    let status: String
-}
 
 struct BrowseView: View {
     //MARK: - Properties
     @StateObject private var viewModel: BrowseViewModel
     @Binding var preselectedCategory: EventCategory?
 
-    @State private var searchText = ""
     @State private var showFilters = false
 
     let onEventSelected: (Int) -> Void
@@ -61,12 +48,21 @@ struct BrowseView: View {
             categories
 
             ScrollView {
-                LazyVStack {
-                    ForEach(viewModel.events, id: \.id) { event in
-                        BrowseEventCardView(
-                            event: event,
-                            onEventSelected: onEventSelected
-                        )
+                if viewModel.isLoading {
+                    ProgressView()
+                        .padding()
+                } else if let errorMessage = viewModel.errorMessage {
+                    Text(errorMessage)
+                        .padding()
+                } else {
+                    LazyVStack {
+                        ForEach(viewModel.filteredEvents, id: \.id) { event in
+                            BrowseEventCardView(
+                                event: event,
+                                viewModel: viewModel,
+                                onEventSelected: onEventSelected
+                            )
+                        }
                     }
                 }
             }
@@ -79,6 +75,10 @@ struct BrowseView: View {
             } else {
                 viewModel.selectedCategory = .all
             }
+            viewModel.fetchEvents()
+        }
+        .onChange(of: viewModel.selectedCategory) {
+            viewModel.fetchEvents()
         }
         .sheet(isPresented: $showFilters) {
             FiltersView()
@@ -112,7 +112,7 @@ struct BrowseView: View {
             HStack {
                 Image(systemName: "magnifyingglass")
                     .foregroundColor(.gray300)
-                TextField("Search events", text: $searchText)
+                TextField("Search events", text: $viewModel.searchText)
             }
             .padding(10)
             .background(Color(.gray300).opacity(0.2))
@@ -150,21 +150,17 @@ struct BrowseView: View {
             HStack(spacing: 8) {
                 ForEach(EventCategory.allCases) { category in
                     Button {
-                        viewModel.selectedCategory = category
+                        viewModel.selectCategory(category)
                     } label: {
                         Text(category.title)
                             .font(.subheadline)
                             .padding(.horizontal, 14)
                             .padding(.vertical, 8)
                             .background(
-                                viewModel.selectedCategory == category
-                                    ? Color.black
-                                    : Color(.systemBackground)
+                                viewModel.selectedCategory == category ? Color.black: Color(.systemBackground)
                             )
                             .foregroundColor(
-                                viewModel.selectedCategory == category
-                                    ? .white
-                                    : .primary
+                                viewModel.selectedCategory == category ? .white: .primary
                             )
                             .cornerRadius(20)
                             .overlay(
