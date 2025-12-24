@@ -8,17 +8,17 @@ import SwiftUI
 
 struct CategoryCardView: View {
     //MARK: - properties
-    let category: Category
+    let category: EventCategoryModel
     let onTap: (Int) -> Void
     
     //MARK: - body
     var body: some View {
         VStack(spacing: 10) {
-            Image(systemName: category.icon)
+            Image(category.name.snakeCased)
                 .font(.system(size: 24))
                 .foregroundColor(.gray300)
             
-            Text(category.title)
+            Text(category.name)
                 .font(.system(size: 14))
                 .foregroundColor(.gray900)
                 .multilineTextAlignment(.center)

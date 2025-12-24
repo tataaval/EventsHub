@@ -31,7 +31,7 @@ final class NetworkService: NetworkServiceProtocol {
         try validateResponse(httpResponse, data: data)
 
         do {
-            let decoder = JSONDecoder()
+            let decoder = JSONDecoder.eventDecoder
             return try decoder.decode(T.self, from: data)
         } catch {
             throw NetworkError.decodingFailed
@@ -52,7 +52,7 @@ final class NetworkService: NetworkServiceProtocol {
         try validateResponse(httpResponse, data: data)
 
         do {
-            let decoder = JSONDecoder()
+            let decoder = JSONDecoder.eventDecoder
             return try decoder.decode(T.self, from: data)
         } catch {
             throw NetworkError.decodingFailed

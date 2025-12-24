@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ProfileView: View {
 
+    //TODO: - სხვანაირად ჯობია
     @ObservedObject private var session = SessionManager.shared
 
     var body: some View {

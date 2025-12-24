@@ -6,20 +6,6 @@
 //
 import SwiftUI
 
-//temporary models
-struct Category: Identifiable {
-    let id: Int
-    let title: String
-    let icon: String
-    let eventCount: Int
-}
-
-struct TrendingEvent: Identifiable {
-    let id: Int
-    let title: String
-    let date: String
-}
-
 struct UpcomingEvent: Identifiable {
     let id: Int
     let date: String
@@ -51,6 +37,7 @@ struct HomeView: View {
         self.onViewAllTapped = onViewAllTapped
     }
 
+    //MARK: - Body
     var body: some View {
         VStack {
             HeaderView()

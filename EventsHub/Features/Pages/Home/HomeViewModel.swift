@@ -9,50 +9,63 @@ import Combine
 import Foundation
 
 final class HomeViewModel: ObservableObject {
-    
+
+    //MARK: - published properties
     @Published var username: String = ""
-    
-    @Published var categories: [Category] = [
-        Category(id: 1, title: "Team Building", icon: "person.3", eventCount: 12),
-        Category(id: 2, title: "Sports", icon: "figure.run", eventCount: 8),
-        Category(id: 3, title: "Sports", icon: "figure.run", eventCount: 8),
-        Category(id: 4, title: "Sports", icon: "figure.run", eventCount: 8),
-        Category(id: 5, title: "Sports", icon: "figure.run", eventCount: 8),
-        
-    ]
-    
-    @Published var  trendingEvents: [TrendingEvent] = [
-        TrendingEvent(id: 1, title: "Tech Talk: AI in Business", date: " Jan 26, 2025"),
-        TrendingEvent(id: 2, title: "Tech Talk: AI in Business", date: " Jan 26, 2025"),
-        TrendingEvent(id: 3, title: "Tech Talk: AI in Business", date: " Jan 26, 2025"),
-        TrendingEvent(id: 4, title: "Tech Talk: AI in Business", date: " Jan 26, 2025"),
-        
-    ]
-    
-    @Published var  upcomingEvents: [UpcomingEvent] = [
-        UpcomingEvent(id: 1,
-                      date: "JAN 18",
-                      title: "Annual Team Building Summit",
-                      time: "08:00 AM - 05:00 PM",
-                      location: "Grand Conference",
-                      description:
-                          "Join us for a full day of engaging activities and networking opportunities.",
-                      registered: "102 registered", spotsLeft: "8 spots left")
-        
-    ]
-    
+    @Published var categories: [EventCategoryModel] = []
+    @Published var trendingEvents: [EventModel] = []
+    @Published var upcomingEvents: [EventModel] = []
+
+    //MARK: - provate properties
     private let session: SessionManager
 
-      init(session: SessionManager = .shared) {
-          self.session = session
-          bindSession()
-      }
+    //MARK: - init
+    init(session: SessionManager = .shared) {
+        self.session = session
+        bindSession()
+        fetchUcomingEvents()
+        fetchCategories()
+        fetchTrendingEvents()
+    }
 
-      private func bindSession() {
-          username = session.profile?.fullName ?? ""
+    //MARK: - provate methods
+    private func bindSession() {
+        username = session.profile?.fullName ?? ""
 
-          session.$profile
-              .map { $0?.fullName ?? "" }
-              .assign(to: &$username)
-      }
+        session.$profile
+            .map { $0?.fullName ?? "" }
+            .assign(to: &$username)
+    }
+    
+    private func fetchUcomingEvents() {
+        Task {
+            do {
+                let response: EventResponse = try await NetworkService.shared.fetch(from: EventAPI.getEvents(filters: ["pageSize": "4"]))
+                upcomingEvents = response.items
+            } catch {
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
+    private func fetchCategories() {
+        Task {
+            do {
+                categories = try await NetworkService.shared.fetch(from: EventAPI.getEventTypes)
+                
+            } catch {
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
+    private func fetchTrendingEvents() {
+        Task {
+            do {
+                trendingEvents = try await NetworkService.shared.fetch(from: EventAPI.getTrendingEvents)
+            } catch {
+                print(error.localizedDescription)
+            }
+        }
+    }
 }

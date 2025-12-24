@@ -8,7 +8,7 @@ import SwiftUI
 
 struct BrowseByCategorySection: View {
     //MARK: - properties
-    let categories: [Category]
+    let categories: [EventCategoryModel]
     let onCategorySelected: (Int) -> Void
     
     private let columns = [
