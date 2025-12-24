@@ -12,6 +12,7 @@ enum EventAPI {
     case departments
 
     case getEvents(filters: [String: Any]?)
+    case getTrendingEvents
     case getEventDetails(id: Int)
     case getEventTypes
 
@@ -42,6 +43,8 @@ extension EventAPI: Endpoint {
 
         case .getEvents:
             return "/api/events"
+        case .getTrendingEvents:
+            return "/api/events/trending"
         case .getEventDetails(let id):
             return "/api/events/\(id)"
         case .getEventTypes:
@@ -76,7 +79,7 @@ extension EventAPI: Endpoint {
 
     var requiresAuth: Bool {
         switch self {
-        case .login, .register:
+            case .login, .register, .getTrendingEvents, .getEventTypes, .getEvents:
             return false
         default:
             return true

@@ -9,13 +9,13 @@ import SwiftUI
 
 struct TrendingEventCardView: View {
     //MARK: - properties
-    let event: TrendingEvent
+    let event: EventModel
     let onEventSelected: (Int) -> Void
     
     //MARK: - Body
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            AsyncImage(url: URL(string: "https://picsum.photos/400/300?grayscale")) { image in
+            AsyncImage(url: URL(string: "")) { image in
                 image
                     .resizable()
                     .scaledToFill()
@@ -34,7 +34,7 @@ struct TrendingEventCardView: View {
                 HStack(spacing: 8) {
                     HStack(spacing: 2) {
                         Image(systemName: "calendar")
-                        Text(event.date)
+                        Text("\(event.monthString) \(event.yearString), \(event.yearString)")
                     }
                     .font(.system(size: 12))
                     .foregroundStyle(.gray300)
@@ -44,6 +44,7 @@ struct TrendingEventCardView: View {
         }
         .background(.white)
         .cornerRadius(8)
+        .frame(width: 240)
         .overlay(
             RoundedRectangle(cornerRadius: 8)
                 .stroke(Color.gray.opacity(0.2), lineWidth: 1)

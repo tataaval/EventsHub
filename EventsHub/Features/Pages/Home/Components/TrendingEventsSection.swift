@@ -8,14 +8,14 @@ import SwiftUI
 
 struct TrendingEventsSection: View {
     //MARK: - properties
-    let trendingEvents: [TrendingEvent]
+    let trendingEvents: [EventModel]
     let onEventSelected: (Int) -> Void
     
     //MARK: - body
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             
-            Text("Browse by Category")
+            Text("Trending Events")
                 .font(.system(size: 18))
                 .foregroundStyle(.gray900)
             

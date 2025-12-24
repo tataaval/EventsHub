@@ -8,7 +8,7 @@ import SwiftUI
 
 struct UpcomingEventsSection: View {
     //MARK: - properties
-    let events: [UpcomingEvent]
+    let events: [EventModel]
     let onEventSelected: (Int) -> Void
     let onViewAllTapped: () -> Void
 
