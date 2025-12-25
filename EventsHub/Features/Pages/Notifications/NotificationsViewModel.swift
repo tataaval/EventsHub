@@ -9,6 +9,7 @@ final class NotificationsViewModel: ObservableObject {
     @Published var errorMessage: String?
     
     private let networkService: NetworkServiceProtocol
+    private var readNotificationIds: Set<Int> = []
     
     //MARK: - Computed Properties
     var filteredNotifications: [Notifications] {
@@ -49,7 +50,17 @@ final class NotificationsViewModel: ObservableObject {
             do {
                 let apiNotifications: [Notification] = try await networkService.fetch(from: endpoint)
                 await MainActor.run {
-                    self.notifications = apiNotifications.map { self.mapToUINotification($0) }
+                    for apiNotification in apiNotifications {
+                        if apiNotification.status.lowercased() == "read" {
+                            self.readNotificationIds.insert(apiNotification.id)
+                        }
+                    }
+                    
+                    self.notifications = apiNotifications.map { apiNotification in
+                        let isRead = self.readNotificationIds.contains(apiNotification.id) || 
+                                    apiNotification.status.lowercased() == "read"
+                        return self.mapToUINotification(apiNotification, isRead: isRead)
+                    }
                     self.isLoading = false
                 }
             } catch {
@@ -84,18 +95,54 @@ final class NotificationsViewModel: ObservableObject {
         selectedType = type
     }
     
+    func markAsRead(_ notification: Notifications) {
+        Task {
+            do {
+                let endpoint = EventAPI.markNotificationAsRead(id: notification.apiId)
+                let response: EmptyResponse = try await networkService.fetch(from: endpoint)
+                
+                await MainActor.run {
+                    self.readNotificationIds.insert(notification.apiId)
+                    
+                    if let index = self.notifications.firstIndex(where: { $0.id == notification.id }) {
+                        let currentNotification = self.notifications[index]
+                        let updated = Notifications(
+                            id: currentNotification.id,
+                            apiId: currentNotification.apiId,
+                            type: currentNotification.type,
+                            status: .earlier,
+                            title: currentNotification.title,
+                            workshopTitle: currentNotification.workshopTitle,
+                            timeline: currentNotification.timeline,
+                            eventTime: currentNotification.eventTime,
+                            location: currentNotification.location,
+                            isUnread: false
+                        )
+                        self.notifications[index] = updated
+                    }
+                }
+            } catch {
+                print(error)
+            }
+        }
+    }
+    
     //MARK: - Private Functions
-    private func mapToUINotification(_ apiNotification: Notification) -> Notifications {
+    private func mapToUINotification(_ apiNotification: Notification, isRead: Bool? = nil) -> Notifications {
+        let readStatus = isRead ?? (apiNotification.status.lowercased() == "read")
+        let notificationStatus = readStatus ? NotificationStatus.earlier : mapNotificationStatus(apiNotification.status)
+        
         return Notifications(
             id: UUID(),
+            apiId: apiNotification.id,
             type: mapNotificationType(apiNotification.notificationType),
-            status: mapNotificationStatus(apiNotification.status),
+            status: notificationStatus,
             title: apiNotification.message,
             workshopTitle: extractEventTitle(from: apiNotification.message),
             timeline: formatTimeline(from: apiNotification.sentAt),
             eventTime: "",
             location: "",
-            isUnread: apiNotification.status.lowercased() != "read"
+            isUnread: !readStatus
         )
     }
     

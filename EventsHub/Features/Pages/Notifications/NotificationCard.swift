@@ -2,6 +2,7 @@ import SwiftUI
 
 struct NotificationCard: View {
     let notification: Notifications
+    let viewModel: NotificationsViewModel
     @State private var showSheet = false
     
     var body: some View {
@@ -35,6 +36,9 @@ struct NotificationCard: View {
         .cornerRadius(12)
         .shadow(color: .black.opacity(0.05), radius: 3)
         .onTapGesture {
+            if notification.isUnread {
+                viewModel.markAsRead(notification)
+            }
             showSheet = true
         }
         .sheet(isPresented: $showSheet) {
@@ -46,5 +50,5 @@ struct NotificationCard: View {
 }
 
 #Preview {
-    NotificationCard(notification: Notifications(id: UUID(), type: .all, status: .earlier, title: "asdjasksfksajfkajsjfkajkfasjfksajfajf", workshopTitle: "workshop title", timeline: "1 minutachku ago", eventTime: "125, 1251,32 13", location: "kutaisisimon", isUnread: true))
+    NotificationCard(notification: Notifications(id: UUID(), apiId: 1, type: .all, status: .earlier, title: "asdjasksfksajfkajsjfkajkfasjfksajfajf", workshopTitle: "workshop title", timeline: "1 minutachku ago", eventTime: "125, 1251,32 13", location: "kutaisisimon", isUnread: true), viewModel: NotificationsViewModel())
 }

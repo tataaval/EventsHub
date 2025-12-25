@@ -65,7 +65,7 @@ struct NotificationsView: View {
                                 .padding(.bottom, 4)
                             
                             ForEach(viewModel.newNotifications) { notification in
-                                NotificationCard(notification: notification)
+                                NotificationCard(notification: notification, viewModel: viewModel)
                             }
                         }
                         
@@ -77,7 +77,7 @@ struct NotificationsView: View {
                                 .padding(.bottom, 4)
                             
                             ForEach(viewModel.earlierNotifications) { notification in
-                                NotificationCard(notification: notification)
+                                NotificationCard(notification: notification, viewModel: viewModel)
                             }
                         }
                     }

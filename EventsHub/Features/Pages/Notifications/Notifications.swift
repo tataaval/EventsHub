@@ -2,6 +2,7 @@ import Foundation
 
 struct Notifications: Identifiable {
     let id: UUID
+    let apiId: Int
     let type: NotificationsType
     let status: NotificationStatus
     let title: String
