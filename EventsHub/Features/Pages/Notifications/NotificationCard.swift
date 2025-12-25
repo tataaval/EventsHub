@@ -46,5 +46,5 @@ struct NotificationCard: View {
 }
 
 #Preview {
-    NotificationCard(notification: Notifications(type: .all, status: .earlier, title: "asdjasksfksajfkajsjfkajkfasjfksajfajf", workshopTitle: "workshop title", timeline: "1 minutachku ago", eventTime: "125, 1251,32 13", location: "kutaisisimon", isUnread: true))
+    NotificationCard(notification: Notifications(id: UUID(), type: .all, status: .earlier, title: "asdjasksfksajfkajsjfkajkfasjfksajfajf", workshopTitle: "workshop title", timeline: "1 minutachku ago", eventTime: "125, 1251,32 13", location: "kutaisisimon", isUnread: true))
 }

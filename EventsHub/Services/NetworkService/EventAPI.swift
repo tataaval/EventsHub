@@ -58,7 +58,7 @@ extension EventAPI: Endpoint {
             return "/api/registrations/user/\(userId)"
 
         case .notifications:
-            return "/api/notifications"
+            return "/api/Notifications/my-notifications"
         }
     }
 
