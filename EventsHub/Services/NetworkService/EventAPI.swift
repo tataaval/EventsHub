@@ -16,9 +16,10 @@ enum EventAPI {
     case getEventDetails(id: Int)
     case getEventTypes
 
+    case checkRegistrationon(eventId: Int)
     case registerForEvent(eventId: Int, userId: Int)
-    case cancelRegistration(id: Int)
-    case myEvents(userId: Int)
+    case cancelRegistration(eventId: Int)
+    case myEvents
 
     case notifications
 }
@@ -50,12 +51,14 @@ extension EventAPI: Endpoint {
         case .getEventTypes:
             return "/api/events/types"
 
+        case .checkRegistrationon(let id):
+            return "/api/registrations/event/\(id)/status"
         case .registerForEvent:
             return "/api/registrations"
-        case .cancelRegistration(let id):
-            return "/api/registrations/\(id)"
-        case .myEvents(let userId):
-            return "/api/registrations/user/\(userId)"
+        case .cancelRegistration(let eventId):
+            return "/api/registrations/event/\(eventId)/cancel"
+        case .myEvents:
+            return "/api/registrations/user/me"
 
         case .notifications:
             return "/api/notifications"

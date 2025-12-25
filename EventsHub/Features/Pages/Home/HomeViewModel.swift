@@ -7,6 +7,7 @@
 
 import Combine
 import Foundation
+
 @MainActor
 final class HomeViewModel: ObservableObject {
 
@@ -20,12 +21,16 @@ final class HomeViewModel: ObservableObject {
     private let session: SessionManager
 
     //MARK: - init
-    init(session: SessionManager = .shared) {
+    init(session: SessionManager) {
         self.session = session
         bindSession()
         fetchUcomingEvents()
         fetchCategories()
         fetchTrendingEvents()
+    }
+
+    convenience init() {
+        self.init(session: SessionManager.shared)
     }
 
     //MARK: - provate methods

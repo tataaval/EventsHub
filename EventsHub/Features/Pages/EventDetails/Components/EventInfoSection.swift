@@ -8,7 +8,7 @@ import SwiftUI
 
 struct EventInfoSection: View {
 
-    let event: EventDetailsModel
+    let event: EventDetailModel
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -17,10 +17,10 @@ struct EventInfoSection: View {
                 .font(.system(size: 24, weight: .medium))
                 .foregroundStyle(.gray900)
 
-            EventDetailRow(icon: "calendar", text: event.date)
-            EventDetailRow(icon: "clock", text: event.time)
-            EventDetailRow(icon: "mappin.and.ellipse", text: event.location)
-            EventDetailRow(icon: "person.2", text: event.registrationInfo)
+            EventDetailRow(icon: "calendar", text: event.dateText)
+            EventDetailRow(icon: "clock", text: event.startTimeString)
+            EventDetailRow(icon: "mappin.and.ellipse", text: event.locationText)
+            EventDetailRow(icon: "person.2", text: event.registrationInfoText)
         }
         .padding(.horizontal)
     }

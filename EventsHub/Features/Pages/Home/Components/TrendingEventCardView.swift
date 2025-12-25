@@ -34,7 +34,7 @@ struct TrendingEventCardView: View {
                 HStack(spacing: 8) {
                     HStack(spacing: 2) {
                         Image(systemName: "calendar")
-                        Text("\(event.monthString) \(event.yearString), \(event.yearString)")
+                        Text(event.dateText)
                     }
                     .font(.system(size: 12))
                     .foregroundStyle(.gray300)

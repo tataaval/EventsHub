@@ -1,39 +1,40 @@
 //
-//  EventModel.swift
+//  EventRegistration.swift
 //  EventsHub
 //
-//  Created by Tatarella on 24.12.25.
+//  Created by Tatarella on 25.12.25.
 //
 import Foundation
 
-struct EventModel: Decodable, Identifiable {
+struct EventRegistration: Decodable, Identifiable {
     let id: Int
-    let title: String
-    let eventTypeName: String
-    let description: String?
+    let eventId: Int
+    let eventTitle: String
+    let eventType: String
     let startDateTime: Date
     let venueName: String?
     let address: String?
     let onlineAddress: String?
-    let capacity: Int
-    let confirmedCount: Int
-    let isFull: Bool
-    let imageUrl: String?
-    let tags: [String]
+    let status: String
+    
+    enum CodingKeys: String, CodingKey {
+        case id = "registrationId"
+        case eventId
+        case eventTitle
+        case eventType
+        case startDateTime
+        case venueName
+        case address
+        case onlineAddress
+        case status
+    }
+
 }
 
-extension EventModel {
+extension EventRegistration {
     
     var normalizedVenueName: String {
         venueName ?? "No Venue Info"
-    }
-
-    var availableSpots: Int {
-        max(capacity - confirmedCount, 0)
-    }
-
-    var isOnline: Bool {
-        onlineAddress != nil
     }
 
     var dayString: String {
@@ -50,10 +51,6 @@ extension EventModel {
 
     var yearString: String {
         startDateTime.formatted(.dateTime.year())
-    }
-    
-    var dateText: String {
-        "\(monthString) \(dayString), \(yearString)"
     }
 
 }
