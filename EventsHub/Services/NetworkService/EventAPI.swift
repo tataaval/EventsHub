@@ -22,6 +22,7 @@ enum EventAPI {
     case myEvents
 
     case notifications
+    case markNotificationAsRead(id: Int)
 }
 
 extension EventAPI: Endpoint {
@@ -62,6 +63,8 @@ extension EventAPI: Endpoint {
 
         case .notifications:
             return "/api/Notifications/my-notifications"
+        case .markNotificationAsRead(let id):
+            return "/api/Notifications/\(id)/read"
         }
     }
 
@@ -71,6 +74,8 @@ extension EventAPI: Endpoint {
             return .post
         case .cancelRegistration:
             return .delete
+        case .markNotificationAsRead:
+            return .put
         default:
             return .get
         }
