@@ -9,20 +9,23 @@ import SwiftUI
 struct RegisterSection: View {
 
     let registrationDeadline: String
-    let onRegister: () -> Void
+    let title: String
+    let isEnabled: Bool
+    let onTap: () -> Void
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            Button(action: onRegister) {
-                Text("Register Now")
+        VStack(spacing: 12) {
+
+            Button(action: onTap) {
+                Text(title)
                     .font(.system(size: 14))
                     .frame(maxWidth: .infinity)
                     .padding()
-                    .background(.black)
+                    .background(isEnabled ? Color.black : Color.gray.opacity(0.4))
                     .foregroundColor(.white)
                     .cornerRadius(8)
             }
-            .padding(.top, 8)
+            .disabled(!isEnabled)
 
             Text(registrationDeadline)
                 .font(.system(size: 12))

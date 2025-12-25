@@ -29,6 +29,10 @@ final class NetworkService: NetworkServiceProtocol {
         }
 
         try validateResponse(httpResponse, data: data)
+        
+        if data.isEmpty {
+           return EmptyResponse() as! T
+        }
 
         do {
             let decoder = JSONDecoder.eventDecoder
@@ -50,6 +54,10 @@ final class NetworkService: NetworkServiceProtocol {
         }
 
         try validateResponse(httpResponse, data: data)
+        
+        if data.isEmpty {
+           return EmptyResponse() as! T
+        }
 
         do {
             let decoder = JSONDecoder.eventDecoder

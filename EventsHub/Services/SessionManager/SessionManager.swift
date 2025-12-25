@@ -8,6 +8,7 @@
 
 import Combine
 
+@MainActor
 final class SessionManager: ObservableObject {
 
     static let shared = SessionManager()
