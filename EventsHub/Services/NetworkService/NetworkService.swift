@@ -8,7 +8,6 @@ import Foundation
 
 protocol NetworkServiceProtocol {
     func fetch<T: Decodable>(from endpoint: Endpoint) async throws -> T
-    func fetch<T: Decodable>(from urlString: String) async throws -> T // TODO: მოვაშოროთ თუ არ დაგვჭირდება 
 }
 
 final class NetworkService: NetworkServiceProtocol {
@@ -23,31 +22,6 @@ final class NetworkService: NetworkServiceProtocol {
     func fetch<T: Decodable>(from endpoint: Endpoint) async throws -> T {
         let request = try endpoint.urlRequest()
         let (data, response) = try await session.data(for: request)
-
-        guard let httpResponse = response as? HTTPURLResponse else {
-            throw NetworkError.invalidResponse
-        }
-
-        try validateResponse(httpResponse, data: data)
-        
-        if data.isEmpty {
-           return EmptyResponse() as! T
-        }
-
-        do {
-            let decoder = JSONDecoder.eventDecoder
-            return try decoder.decode(T.self, from: data)
-        } catch {
-            throw NetworkError.decodingFailed
-        }
-    }
-
-    func fetch<T: Decodable>(from urlString: String) async throws -> T {
-        guard let url = URL(string: urlString) else {
-            throw NetworkError.invalidResponse
-        }
-
-        let (data, response) = try await session.data(from: url)
 
         guard let httpResponse = response as? HTTPURLResponse else {
             throw NetworkError.invalidResponse

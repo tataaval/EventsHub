@@ -20,7 +20,7 @@ struct MainTabView: View {
     @Binding var preselectedCategory: EventCategory?
 
     let onEventSelected: (Int) -> Void
-    let onCategorySelected: (Int) -> Void
+    let onCategorySelected: (String) -> Void
 
     var body: some View {
         TabView(selection: $selectedTab) {

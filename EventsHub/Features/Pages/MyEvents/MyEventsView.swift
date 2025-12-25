@@ -8,9 +8,9 @@ import SwiftUI
 
 struct MyEventsView: View {
 
-   @StateObject private var viewModel: MyEventsViewModel
+    @StateObject private var viewModel: MyEventsViewModel
     let onEventSelected: (Int) -> Void
-    
+
     init(onEventSelected: @escaping (Int) -> Void) {
         _viewModel = StateObject(wrappedValue: MyEventsViewModel())
         self.onEventSelected = onEventSelected
@@ -27,7 +27,9 @@ struct MyEventsView: View {
                         Button {
                             onEventSelected(registration.eventId)
                         } label: {
-                            EventRegistrationCardView(registration: registration)
+                            EventRegistrationCardView(
+                                registration: registration
+                            )
                         }
                         .buttonStyle(.plain)
                     }
@@ -38,6 +40,10 @@ struct MyEventsView: View {
                 await viewModel.fetchMyEvents()
             }
         }
+        .onAppear {
+            Task {
+                await viewModel.fetchMyEvents()
+            }
+        }
     }
 }
-

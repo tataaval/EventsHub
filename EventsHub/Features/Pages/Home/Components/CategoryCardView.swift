@@ -9,7 +9,7 @@ import SwiftUI
 struct CategoryCardView: View {
     //MARK: - properties
     let category: EventCategoryModel
-    let onTap: (Int) -> Void
+    let onTap: (String) -> Void
     
     //MARK: - body
     var body: some View {
@@ -36,7 +36,7 @@ struct CategoryCardView: View {
                 .stroke(Color.gray.opacity(0.2), lineWidth: 1)
         )
         .onTapGesture {
-            onTap(category.id)
+            onTap(category.name)
         }
     }
 }

@@ -24,8 +24,8 @@ struct MainCoordinatorView: View {
                 onEventSelected: { eventID in
                     path.append(MainRoute.eventDetails(eventID))
                 },
-                onCategorySelected: { categoryID in
-                    preselectedCategory = mapCategory(categoryID)
+                onCategorySelected: { categoryName in
+                    preselectedCategory = mapCategory(categoryName)
                     selectedTab = .browse
                 }
             )
@@ -41,14 +41,15 @@ struct MainCoordinatorView: View {
         }
     }
 
-    //TODO: - სწორი კატეგორიები ჩაისვას
-    private func mapCategory(_ id: Int) -> EventCategory {
+    private func mapCategory(_ id: String) -> EventCategory {
         switch id {
-        case 1: return .teamBuilding
-        case 2: return .workshop
-        case 3: return .wellness
+        case "Team Building": return .teamBuilding
+        case "Workshop": return .workshop
+        case "Wellness": return .wellness
+        case "Sports": return .sports
+        case "Happy Friday": return .happyFriday
+        case "Cultural": return .cultural
         default: return .all
         }
     }
 }
-

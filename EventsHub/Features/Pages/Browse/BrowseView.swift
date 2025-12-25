@@ -7,7 +7,7 @@
 import SwiftUI
 
 enum EventCategory: String, CaseIterable, Identifiable {
-    case all, teamBuilding, workshop, wellness
+    case all, teamBuilding, workshop, wellness, sports, happyFriday, cultural
     var id: String { rawValue }
 
     var title: String {
@@ -16,6 +16,9 @@ enum EventCategory: String, CaseIterable, Identifiable {
         case .teamBuilding: "Team Building"
         case .workshop: "Workshops"
         case .wellness: "Wellness"
+        case .sports: "Sports"
+        case .happyFriday: "Happy Friday"
+        case .cultural: "Cultural"
         }
     }
 }
