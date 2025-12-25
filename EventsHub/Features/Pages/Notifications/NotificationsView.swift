@@ -34,27 +34,51 @@ struct NotificationsView: View {
                 .frame(height: 1)
             
             ScrollView {
-                VStack(alignment: .leading, spacing: 16) {
-                    if !viewModel.newNotifications.isEmpty {
-                        Text("NEW")
-                            .font(.system(size: 14))
+                if viewModel.isLoading {
+                    ProgressView()
+                        .padding()
+                } else if let errorMessage = viewModel.errorMessage {
+                    VStack(spacing: 8) {
+                        Text("Error")
+                            .font(.headline)
+                        Text(errorMessage)
+                            .font(.subheadline)
                             .foregroundStyle(.secondary)
-                            .padding(.bottom, 4)
-                        
-                        ForEach(viewModel.newNotifications) { notification in
-                            NotificationCard(notification: notification)
-                        }
+                            .multilineTextAlignment(.center)
                     }
-                    
-                    if !viewModel.earlierNotifications.isEmpty {
-                        Text("EARLIER")
-                            .font(.system(size: 14))
+                    .padding()
+                } else if viewModel.newNotifications.isEmpty && viewModel.earlierNotifications.isEmpty {
+                    VStack(spacing: 8) {
+                        Text("No notifications")
+                            .font(.headline)
+                        Text("You're all caught up!")
+                            .font(.subheadline)
                             .foregroundStyle(.secondary)
-                            .padding(.top, viewModel.newNotifications.isEmpty ? 0 : 8)
-                            .padding(.bottom, 4)
+                    }
+                    .padding()
+                } else {
+                    VStack(alignment: .leading, spacing: 16) {
+                        if !viewModel.newNotifications.isEmpty {
+                            Text("NEW")
+                                .font(.system(size: 14))
+                                .foregroundStyle(.secondary)
+                                .padding(.bottom, 4)
+                            
+                            ForEach(viewModel.newNotifications) { notification in
+                                NotificationCard(notification: notification)
+                            }
+                        }
                         
-                        ForEach(viewModel.earlierNotifications) { notification in
-                            NotificationCard(notification: notification)
+                        if !viewModel.earlierNotifications.isEmpty {
+                            Text("EARLIER")
+                                .font(.system(size: 14))
+                                .foregroundStyle(.secondary)
+                                .padding(.top, viewModel.newNotifications.isEmpty ? 0 : 8)
+                                .padding(.bottom, 4)
+                            
+                            ForEach(viewModel.earlierNotifications) { notification in
+                                NotificationCard(notification: notification)
+                            }
                         }
                     }
                 }
@@ -62,6 +86,9 @@ struct NotificationsView: View {
             .padding()
             
             Spacer()
+        }
+        .onAppear {
+            viewModel.fetchNotifications()
         }
     }
 }

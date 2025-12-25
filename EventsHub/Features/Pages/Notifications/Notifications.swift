@@ -1,7 +1,7 @@
 import Foundation
 
 struct Notifications: Identifiable {
-    let id = UUID()
+    let id: UUID
     let type: NotificationsType
     let status: NotificationStatus
     let title: String

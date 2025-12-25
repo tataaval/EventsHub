@@ -79,6 +79,5 @@ struct NotificationsDetailView: View {
 }
 
 #Preview {
-    NotificationsDetailView(notification: Notifications(type: .all, status: .new, title: "Tech Talk: AI in Business", workshopTitle: "Tech Talk: AI in Business", timeline: "1 hour ago", eventTime: "Jan 26, 2025, 11:00 AM - 12:30 PM", location: "Virtual Meeting", isUnread: false
-    ))
+    NotificationsDetailView(notification: Notifications(id: UUID(), type: .all, status: .new, title: "Tech Talk: AI in Business", workshopTitle: "Tech Talk: AI in Business", timeline: "1 hour ago", eventTime: "Jan 26, 2025, 11:00 AM - 12:30 PM", location: "Virtual Meeting", isUnread: false))
 }

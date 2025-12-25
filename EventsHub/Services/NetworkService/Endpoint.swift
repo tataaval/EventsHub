@@ -17,7 +17,11 @@ protocol Endpoint {
 
 extension Endpoint {
     func urlRequest() throws -> URLRequest {
-        let url = baseURL.appendingPathComponent(path)
+        let urlString = baseURL.absoluteString.trimmingCharacters(in: CharacterSet(charactersIn: "/"))
+        let pathString = path.hasPrefix("/") ? path : "/\(path)"
+        guard let url = URL(string: urlString + pathString) else {
+            throw NetworkError.invalidResponse
+        }
         var request = URLRequest(url: url)
         request.httpMethod = method.rawValue
 
