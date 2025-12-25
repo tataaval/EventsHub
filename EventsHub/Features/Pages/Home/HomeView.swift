@@ -21,14 +21,14 @@ struct HomeView: View {
     
     //MARK: - properties
     let onEventSelected: (Int) -> Void
-    let onCategorySelected: (Int) -> Void
+    let onCategorySelected: (String) -> Void
     let onViewAllTapped: () -> Void
     
     @StateObject private var viewModel: HomeViewModel
     
     init(
         onEventSelected: @escaping (Int) -> Void,
-        onCategorySelected: @escaping (Int) -> Void,
+        onCategorySelected: @escaping (String) -> Void,
         onViewAllTapped: @escaping () -> Void
     ) {
         _viewModel = StateObject(wrappedValue: HomeViewModel())

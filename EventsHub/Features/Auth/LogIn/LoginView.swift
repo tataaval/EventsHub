@@ -25,9 +25,9 @@ struct LoginView: View {
                 ReusableTextfield(
                     title: "Password",
                     placeholder: "Enter your password",
-                    text: $viewModel.password
+                    text: $viewModel.password,
+                    isSecure: true
                 )
-
                 VStack(spacing: 50) {
                     HStack(spacing: 100) {
                         CheckmarkView(

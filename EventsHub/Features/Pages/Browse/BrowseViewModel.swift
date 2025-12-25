@@ -202,7 +202,10 @@ final class BrowseViewModel: ObservableObject {
         let categoryMapping: [EventCategory: String] = [
             .teamBuilding: "Team Building",
             .workshop: "Workshop",
-            .wellness: "Wellness"
+            .wellness: "Wellness",
+            .sports: "Sports",
+            .happyFriday: "Happy Friday",
+            .cultural: "Cultural"
         ]
         
         return categoryMapping[category]

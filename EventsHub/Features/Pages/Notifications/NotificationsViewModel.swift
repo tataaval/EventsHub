@@ -42,7 +42,7 @@ final class NotificationsViewModel: ObservableObject {
         let endpoint = EventAPI.notifications
         
         do {
-            let request = try endpoint.urlRequest()
+            let _ = try endpoint.urlRequest()
         } catch {
         }
         

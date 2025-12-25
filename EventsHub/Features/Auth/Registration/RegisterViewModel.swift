@@ -99,7 +99,7 @@ class RegisterViewModel: ObservableObject {
         
         Task {
             do {
-                let response: RegisterResponse = try await NetworkService.shared.fetch(from: EventAPI.register(
+                let _: RegisterResponse = try await NetworkService.shared.fetch(from: EventAPI.register(
                     firstName: firstName,
                     lastName: lastName,
                     email: email,

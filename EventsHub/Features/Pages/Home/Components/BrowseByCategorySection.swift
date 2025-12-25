@@ -9,7 +9,7 @@ import SwiftUI
 struct BrowseByCategorySection: View {
     //MARK: - properties
     let categories: [EventCategoryModel]
-    let onCategorySelected: (Int) -> Void
+    let onCategorySelected: (String) -> Void
     
     private let columns = [
         GridItem(.flexible()),
