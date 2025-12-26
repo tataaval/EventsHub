@@ -99,7 +99,7 @@ final class NotificationsViewModel: ObservableObject {
         Task {
             do {
                 let endpoint = EventAPI.markNotificationAsRead(id: notification.apiId)
-                let response: EmptyResponse = try await networkService.fetch(from: endpoint)
+                let _: EmptyResponse = try await networkService.fetch(from: endpoint)
                 
                 await MainActor.run {
                     self.readNotificationIds.insert(notification.apiId)

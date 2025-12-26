@@ -19,8 +19,11 @@ struct EventBanner: View {
                         .resizable()
                         .scaledToFill()
                 } placeholder: {
-                    Rectangle()
-                        .fill(Color.gray.opacity(0.3))
+                    ZStack{
+                        Rectangle()
+                            .fill(Color.gray.opacity(0.3))
+                        Image(systemName: "photo")
+                    }
                 }
             } else {
                 Rectangle()

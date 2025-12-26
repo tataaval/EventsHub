@@ -15,13 +15,17 @@ struct TrendingEventCardView: View {
     //MARK: - Body
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            AsyncImage(url: URL(string: "")) { image in
+            AsyncImage(url: URL(string: event.imageUrlNormalized)) { image in
                 image
                     .resizable()
                     .scaledToFill()
             } placeholder: {
-                Rectangle()
-                    .fill(Color.gray.opacity(0.3))
+                ZStack{
+                    Rectangle()
+                        .fill(Color.gray.opacity(0.3))
+                    Image(systemName: "photo")
+                }
+                
             }
             .frame(height: 120)
             .clipped()

@@ -22,7 +22,7 @@ struct EventDetailsView: View {
                 ScrollView {
                     VStack(alignment: .leading, spacing: 20) {
                         
-                        EventBanner(imageURL: URL(string: "https://picsum.photos/400/300?grayscale"))
+                        EventBanner(imageURL: URL(string: event.imageUrlNormalized))
                         
                         EventTags(tags: event.tags)
                         

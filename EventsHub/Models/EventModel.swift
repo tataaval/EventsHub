@@ -55,5 +55,9 @@ extension EventModel {
     var dateText: String {
         "\(monthString) \(dayString), \(yearString)"
     }
+    
+    var imageUrlNormalized: String {
+        imageUrl ?? ""
+    }
 
 }

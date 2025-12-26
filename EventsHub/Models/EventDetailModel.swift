@@ -88,4 +88,8 @@ extension EventDetailModel {
         let time = registrationDeadline.formatted(.dateTime.hour().minute())
         return "Registration closes on \(date) at \(time)"
     }
+    
+    var imageUrlNormalized: String {
+        imageUrl ?? ""
+    }
 }
